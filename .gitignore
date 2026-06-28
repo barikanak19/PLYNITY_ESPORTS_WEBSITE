@@ -25,6 +25,3 @@ dist-ssr
 .env
 .env.local
 .env.*
-src/config/tournaments.js
-src/hooks/useRazorpay.js
-src/services/sheetsService.jsx
