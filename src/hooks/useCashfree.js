@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { createCashfreePaymentSession, loadCashfreeScript } from '../services/cashfreeService';
+import { createCashfreePaymentSession, loadCashfreeScript, CASHFREE_ENV } from '../services/cashfreeService';
 
 export function useCashfree() {
   const initiatePayment = useCallback(async ({
@@ -28,7 +28,7 @@ export function useCashfree() {
       });
 
       const cashfree = new window.Cashfree({
-        mode: import.meta.env.VITE_CASHFREE_ENV || 'sandbox',
+        mode: CASHFREE_ENV,
       });
 
       cashfree.on('payment', (event) => {

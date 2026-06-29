@@ -8,6 +8,5 @@ Payments are handled through Cashfree Web Checkout. Configure the following envi
 
 - VITE_CASHFREE_APP_ID
 - VITE_CASHFREE_ENV=sandbox
-- VITE_CASHFREE_SESSION_URL
 
-The registration flow creates a Cashfree payment session, opens the checkout, and only saves the registration after payment succeeds.
+The registration flow requests a payment_session_id from your backend endpoint at /api/cashfree/session, opens the checkout, and only saves the registration after payment succeeds. The frontend never stores or exposes the Cashfree Secret Key.
