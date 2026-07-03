@@ -37,7 +37,7 @@ export function useCashfree() {
       }
 
       const returnUrl = buildCashfreeReturnUrl();
-      concole.log("Generated Order ID:", orderId);
+      console.log("Generated Order ID:", orderId);
       console.log("[Cashfree] Return URL for payment:", returnUrl);
 
       const paymentSession = await createCashfreePaymentSession({
