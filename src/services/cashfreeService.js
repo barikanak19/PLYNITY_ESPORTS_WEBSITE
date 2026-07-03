@@ -35,7 +35,6 @@ export function buildCashfreeReturnUrl() {
   url.searchParams.delete('order_id');
   url.searchParams.delete('payment_return');
   url.searchParams.set('payment_return', '1');
-  url.searchParams.set('order_id', '{order_id}');
   return url.toString();
 }
 
