@@ -9,6 +9,8 @@
 export const CASHFREE_APP_ID = import.meta.env.VITE_CASHFREE_APP_ID ?? '';
 export const CASHFREE_ENV = import.meta.env.VITE_CASHFREE_ENV || 'production';
 
+// Each key below is the Google Apps Script Web App URL for exactly one tournament sheet.
+// Set these values in the root .env file or in .env.production for Vercel builds.
 export const GOOGLE_SHEET_URLS = {
   BGMI_SOLO_FRIDAY: import.meta.env.VITE_BGMI_SOLO_FRIDAY ?? '',
   BGMI_DUO_FRIDAY: import.meta.env.VITE_BGMI_DUO_FRIDAY ?? '',

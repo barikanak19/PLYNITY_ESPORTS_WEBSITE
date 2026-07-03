@@ -14,6 +14,7 @@ import {
   verifyCashfreePayment,
 } from '../services/cashfreeService';
 import { submitRegistration } from '../services/sheetsService';
+import { buildRegistrationPayload } from '../services/registrationPayload';
 import { getAllMatches } from '../config/tournaments';
 
 const MATCH_TYPES_LABEL = { SOLO: 'Solo', DUO: 'Duo', SQUAD: 'Squad' };
@@ -53,29 +54,16 @@ export default function RegisterPage() {
 
   const completeRegistration = async (paymentIdValue, formOverride = null) => {
     const registrationForm = formOverride || form;
-    const isDuoMatch = matchInfo?.type === 'DUO';
-    const isSquadMatch = matchInfo?.type === 'SQUAD';
 
     setPaymentId(paymentIdValue);
 
-    const payload = {
-      timestamp: new Date().toISOString(),
-      game: game.name,
-      matchType: matchInfo.type,
-      day: matchInfo.day,
-      time: matchInfo.time,
-      entryFee: matchInfo.entryFee,
+    const payload = buildRegistrationPayload({
+      form: registrationForm,
+      matchType: matchInfo?.type,
       paymentId: paymentIdValue,
-      player1Name: registrationForm.playerName,
-      mobile: registrationForm.mobile,
-      email: registrationForm.email,
-      instagramId: registrationForm.instagramId,
-      ...(isDuoMatch || isSquadMatch ? { player2Name: registrationForm.player2Name } : {}),
-      ...(isSquadMatch ? {
-        player3Name: registrationForm.player3Name,
-        player4Name: registrationForm.player4Name,
-      } : {}),
-    };
+      timestamp: new Date().toISOString(),
+      matchInfo,
+    });
 
     try {
       await submitRegistration(matchInfo.sheetKey, payload);
