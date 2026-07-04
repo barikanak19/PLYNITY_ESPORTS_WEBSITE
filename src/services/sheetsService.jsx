@@ -11,25 +11,49 @@ import { GOOGLE_SHEET_URLS } from '../config/tournaments';
 export async function submitRegistration(sheetKey, data) {
   const url = GOOGLE_SHEET_URLS[sheetKey];
 
+  console.log('[Sheets] Submitting registration payload to Google Apps Script...', {
+    sheetKey,
+    url: url ? `${url.slice(0, 80)}...` : '(not configured)',
+  });
+
   if (!url || url.startsWith('PLACEHOLDER')) {
-    console.warn(`[Plynity] Sheet URL not configured for: ${sheetKey}`);
-    // In dev/placeholder mode, simulate success after 1s
-    return new Promise((resolve) => setTimeout(() => resolve({ success: true, simulated: true }), 1000));
+    if (import.meta.env.DEV) {
+      console.warn(`[Sheets] Sheet URL not configured for: ${sheetKey}. Using local simulation.`);
+      return new Promise((resolve) => setTimeout(() => resolve({ success: true, simulated: true }), 1000));
+    }
+
+    throw new Error('Google Sheets endpoint is not configured.');
   }
 
   try {
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    const responseText = await response.text();
+    let responseData = {};
+
+    try {
+      responseData = responseText ? JSON.parse(responseText) : {};
+    } catch {
+      responseData = { message: responseText };
     }
 
-    return await response.json().catch(() => ({ success: true }));
+    console.log('[Sheets] Google Apps Script response.', { status: response.status, responseData });
+
+    if (!response.ok || responseData?.success === false) {
+      const message = responseData?.error || responseData?.message || 'Google Sheets submission failed.';
+      throw new Error(message);
+    }
+
+    return responseData;
   } catch (error) {
-    throw new Error('Failed to save registration. Please contact support.');
+    console.error('[Sheets] Registration submission failed.', error);
+    throw new Error(error.message || 'Failed to save registration. Please contact support.');
   }
 }

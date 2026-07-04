@@ -3,26 +3,44 @@
 
 function doPost(e) {
   try {
-    const payload = typeof e.postData?.contents === 'string'
-      ? JSON.parse(e.postData.contents)
-      : {};
+    const payload = parsePayload(e);
+    console.log('Received registration payload', payload);
 
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(getSheetName(payload.matchType));
+    const sheetName = payload.sheetName || payload.sheet || getSheetName(payload.matchType);
+    let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+
     if (!sheet) {
-      throw new Error(`Sheet not found for match type: ${payload.matchType || 'UNKNOWN'}`);
+      const fallbackSheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+      if (!fallbackSheet) {
+        throw new Error('No sheets are available in the spreadsheet.');
+      }
+      sheet = fallbackSheet;
     }
 
     const row = buildRegistrationRow(payload);
     sheet.appendRow(row);
 
     return ContentService
-      .createTextOutput(JSON.stringify({ success: true, rowCount: row.length }))
+      .createTextOutput(JSON.stringify({ success: true, rowCount: row.length, sheetName: sheet.getName() }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
     console.error(error);
     return ContentService
       .createTextOutput(JSON.stringify({ success: false, error: error.message }))
       .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function parsePayload(e) {
+  const contents = e?.postData?.contents;
+  if (!contents) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(contents);
+  } catch {
+    return e?.parameter || {};
   }
 }
 

@@ -15,12 +15,14 @@ export default async function handler(req, res) {
 
   try {
     const orderId = req.query?.order_id || req.query?.orderId;
+    console.log('[Cashfree API] Verification request received.', { orderId });
 
     if (!orderId) {
       return sendJson(res, 400, { error: 'order_id query parameter is required.' });
     }
 
     const result = await fetchCashfreeOrder(orderId);
+    console.log('[Cashfree API] Verification completed.', result);
 
     return sendJson(res, 200, {
       orderId: result.orderId,

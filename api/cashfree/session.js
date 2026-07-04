@@ -15,6 +15,8 @@ export default async function handler(req, res) {
 
   try {
     const body = await readJsonBody(req);
+    console.log('[Cashfree API] Session creation request received.', body);
+
     const {
       orderId,
       amount,
@@ -42,6 +44,8 @@ export default async function handler(req, res) {
       orderNote,
       returnUrl,
     });
+
+    console.log('[Cashfree API] Session creation completed.', result);
 
     return sendJson(res, 200, {
       paymentSessionId: result.paymentSessionId,

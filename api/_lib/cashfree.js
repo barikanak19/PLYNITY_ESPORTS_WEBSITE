@@ -50,6 +50,20 @@ async function parseCashfreeResponse(response) {
   return data;
 }
 
+function normalizePaymentState(data = {}) {
+  const paymentStatus = String(data?.payment_status || data?.paymentStatus || data?.status || '').toUpperCase();
+  const orderStatus = String(data?.order_status || data?.orderStatus || '').toUpperCase();
+  const isPaid =
+    paymentStatus === 'SUCCESS' ||
+    paymentStatus === 'PAID' ||
+    paymentStatus === 'COMPLETED' ||
+    orderStatus === 'SUCCESS' ||
+    orderStatus === 'PAID' ||
+    orderStatus === 'COMPLETED';
+
+  return { paymentStatus: paymentStatus || null, orderStatus: orderStatus || null, isPaid };
+}
+
 export async function createCashfreeOrder({
   orderId,
   amount,
@@ -90,6 +104,7 @@ export async function createCashfreeOrder({
     orderId,
     amount: payload.order_amount,
     mode: config.mode,
+    returnUrl,
   });
 
   const response = await fetch(`${config.baseUrl}/orders`, {
@@ -108,6 +123,8 @@ export async function createCashfreeOrder({
     throw error;
   }
 
+  console.log('[Cashfree API] Order created successfully.', { orderId, paymentSessionId, response: data });
+
   return {
     paymentSessionId,
     orderId: data.order_id || orderId,
@@ -124,17 +141,22 @@ export async function fetchCashfreeOrder(orderId) {
     throw error;
   }
 
+  console.log('[Cashfree API] Verifying order with Cashfree...', { orderId, mode: config.mode });
+
   const response = await fetch(`${config.baseUrl}/orders/${encodeURIComponent(orderId)}`, {
     method: 'GET',
     headers: cashfreeHeaders(config),
   });
 
   const data = await parseCashfreeResponse(response);
+  const normalized = normalizePaymentState(data);
+
+  console.log('[Cashfree API] Verification response received.', { orderId, ...normalized, raw: data });
 
   return {
     orderId: data.order_id || orderId,
-    orderStatus: data.order_status,
-    paymentStatus: data.payment_status,
-    isPaid: data.order_status === 'PAID',
+    orderStatus: normalized.orderStatus,
+    paymentStatus: normalized.paymentStatus,
+    isPaid: normalized.isPaid,
   };
 }

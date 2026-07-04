@@ -14,7 +14,6 @@ export function useCashfree() {
     phone,
     orderId,
     description,
-    onSuccess,
     onFailure,
   }) => {
     try {
@@ -36,9 +35,8 @@ export function useCashfree() {
         throw new Error('Payment gateway could not be loaded. Please check your internet connection and try again.');
       }
 
-      const returnUrl = buildCashfreeReturnUrl();
-      console.log("Generated Order ID:", orderId);
-      console.log("[Cashfree] Return URL for payment:", returnUrl);
+      const returnUrl = buildCashfreeReturnUrl(orderId);
+      console.log('[Cashfree] Generated return URL.', { returnUrl, orderId });
 
       const paymentSession = await createCashfreePaymentSession({
         orderId,
@@ -68,6 +66,8 @@ export function useCashfree() {
         returnUrl,
       });
 
+      console.log('[Cashfree] Checkout response received.', checkoutResult);
+
       if (checkoutResult?.error) {
         console.error('[Cashfree] Checkout error.', checkoutResult.error);
         onFailure?.(checkoutResult.error.message || 'Payment failed during checkout. Please try again.');
@@ -75,15 +75,12 @@ export function useCashfree() {
       }
 
       if (checkoutResult?.redirect) {
-        console.log('[Cashfree] Redirecting to Cashfree-hosted checkout page.');
+        console.log('[Cashfree] Checkout redirected to Cashfree-hosted payment page.');
         return;
       }
 
       if (checkoutResult?.paymentDetails) {
-        console.log('[Cashfree] Payment completed without redirect.', checkoutResult.paymentDetails);
-        onSuccess?.({
-          paymentId: checkoutResult.paymentDetails.orderId || orderId,
-        });
+        console.warn('[Cashfree] Checkout returned payment details without a redirect. Registration will be finalized only after server-side verification.', checkoutResult.paymentDetails);
       }
     } catch (error) {
       console.error('[Cashfree] Payment flow failed.', error);

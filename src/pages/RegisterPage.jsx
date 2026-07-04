@@ -65,8 +65,17 @@ export default function RegisterPage() {
       matchInfo,
     });
 
+    console.log('[Register] Finalizing registration after verified payment.', {
+      paymentIdValue,
+      matchId: matchInfo?.id,
+      sheetKey: matchInfo?.sheetKey,
+      payload,
+    });
+
     try {
-      await submitRegistration(matchInfo.sheetKey, payload);
+      const submissionResult = await submitRegistration(matchInfo.sheetKey, payload);
+      console.log('[Register] Google Sheets submission succeeded.', submissionResult);
+
       const key = `plynity_reg_${matchInfo.id}`;
       const prev = parseInt(localStorage.getItem(key) || '0', 10);
       localStorage.setItem(key, prev + 1);
@@ -84,8 +93,9 @@ export default function RegisterPage() {
       clearPendingRegistration();
       setStep('success');
     } catch (err) {
-      setErrorMsg(err.message || 'Registration saved but sheet submission failed.');
-      setStep('success');
+      console.error('[Register] Registration submission failed after payment confirmation.', err);
+      setErrorMsg(err.message || 'Payment was verified, but registration could not be saved. Please contact support.');
+      setStep('error');
     }
   };
 
@@ -94,7 +104,7 @@ export default function RegisterPage() {
     const isPaymentReturn = params.get('payment_return') === '1';
     const returnedOrderId = params.get('order_id');
 
-    if (!isPaymentReturn || !returnedOrderId || !matchInfo) {
+    if (!isPaymentReturn || !matchInfo) {
       return;
     }
 
@@ -102,27 +112,40 @@ export default function RegisterPage() {
 
     const handlePaymentReturn = async () => {
       setStep('paying');
+      setErrorMsg('');
+      console.log('[Register] Payment return detected.', {
+        pathname: location.pathname,
+        orderId: returnedOrderId,
+      });
 
       try {
         const pending = loadPendingRegistration();
+        console.log('[Register] Loaded pending registration from session storage.', pending);
+
         const registrationForm = pending?.form || form;
 
         if (pending?.form) {
           setForm(pending.form);
         }
 
-        const verification = await verifyCashfreePayment(returnedOrderId);
+        const verificationOrderId = returnedOrderId || pending?.orderId;
+        if (!verificationOrderId) {
+          throw new Error('Cashfree did not return an order ID for verification.');
+        }
+
+        const verification = await verifyCashfreePayment(verificationOrderId);
+        console.log('[Register] Cashfree verification result.', verification);
 
         if (cancelled) return;
 
         if (!verification?.isPaid) {
-          throw new Error('Payment was not completed. Please try again.');
+          throw new Error('Payment was not completed successfully. Please try again.');
         }
 
-        navigate(location.pathname, { replace: true, state: location.state });
-        await completeRegistration(returnedOrderId, registrationForm);
+        await completeRegistration(verification.orderId || verificationOrderId, registrationForm);
       } catch (err) {
         if (cancelled) return;
+        console.error('[Register] Payment verification failed.', err);
         setErrorMsg(err.message || 'Payment verification failed. Please try again.');
         setStep('error');
       }
@@ -133,7 +156,7 @@ export default function RegisterPage() {
     return () => {
       cancelled = true;
     };
-  }, [location.search, matchInfo?.id]);
+  }, [location.search, location.pathname, matchInfo?.id]);
 
   if (!matchInfo) {
     return (
@@ -175,6 +198,7 @@ export default function RegisterPage() {
       return;
     }
     setStep('paying');
+    setErrorMsg('');
 
     const orderId = `${matchInfo.id}-${Date.now()}`;
     savePendingRegistration({
@@ -182,6 +206,7 @@ export default function RegisterPage() {
       matchId: matchInfo.id,
       orderId,
     });
+    console.log('[Register] Pending registration saved before checkout.', { orderId, matchId: matchInfo.id });
 
     initiatePayment({
       amount: matchInfo.entryFee,
@@ -190,10 +215,8 @@ export default function RegisterPage() {
       phone: form.mobile,
       orderId,
       description: `${game.name} ${matchInfo.type} ${matchInfo.day} - ₹${matchInfo.entryFee}`,
-      onSuccess: async ({ paymentId: paidOrderId }) => {
-        await completeRegistration(paidOrderId);
-      },
       onFailure: (msg) => {
+        clearPendingRegistration();
         setErrorMsg(msg || 'Payment failed. Please try again.');
         setStep('error');
       },
