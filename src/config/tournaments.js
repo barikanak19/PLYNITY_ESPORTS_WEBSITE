@@ -40,7 +40,7 @@ export const TOURNAMENTS = {
               { place: '4th Place', amount: 100, medal: 'trophy' },
               { place: '5th Place', amount: 100, medal: 'trophy' },
               { place: '6th Place', amount: 100, medal: 'trophy' },
-              { place: '7th Place', amount: 100, medal: 'trophy' },
+              { place: 'Top Finisher', amount: 100, medal: 'trophy' },
             ],
           },
           {
@@ -87,6 +87,7 @@ export const TOURNAMENTS = {
               { place: '8th Place', amount: 150, medal: 'trophy' },
               { place: '9th Place', amount: 150, medal: 'trophy' },
               { place: '10th Place', amount: 150, medal: 'trophy' },
+              { place: 'Top Finisher', amount: 50, medal: 'trophy' },
             ],
           },
           {
@@ -130,7 +131,7 @@ export const TOURNAMENTS = {
               { place: '4th Place', amount: 100, medal: 'trophy' },
               { place: '5th Place', amount: 100, medal: 'trophy' },
               { place: '6th Place', amount: 100, medal: 'trophy' },
-              { place: '7th Place', amount: 100, medal: 'trophy' },
+              { place: 'Top Finisher', amount: 100, medal: 'trophy' },
             ],
           },
           {
@@ -185,7 +186,7 @@ export const TOURNAMENTS = {
               { place: '4th Place', amount: 50, medal: 'trophy' },
               { place: '5th Place', amount: 50, medal: 'trophy' },
               { place: '6th Place', amount: 50, medal: 'trophy' },
-              { place: '7th Place', amount: 50, medal: 'trophy' },
+              { place: 'Top Finisher', amount: 50, medal: 'trophy' },
             ],
           },
           {
@@ -230,8 +231,7 @@ export const TOURNAMENTS = {
               { place: '8th Place', amount: 50, medal: 'trophy' },
               { place: '9th Place', amount: 50, medal: 'trophy' },
               { place: '10th Place', amount: 50, medal: 'trophy' },
-              { place: '11th Place', amount: 50, medal: 'trophy' },
-              { place: '12th Place', amount: 50, medal: 'trophy' },
+              { place: 'Top Finisher', amount: 50, medal: 'trophy' },
             ],
           },
           {
@@ -271,7 +271,7 @@ export const TOURNAMENTS = {
               { place: '4th Place', amount: 50, medal: 'trophy' },
               { place: '5th Place', amount: 50, medal: 'trophy' },
               { place: '6th Place', amount: 50, medal: 'trophy' },
-              { place: '7th Place', amount: 50, medal: 'trophy' },
+              { place: 'Top Finisher', amount: 50, medal: 'trophy' },
             ],
           },
           {

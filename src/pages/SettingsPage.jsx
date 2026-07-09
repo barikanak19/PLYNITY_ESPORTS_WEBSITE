@@ -66,7 +66,7 @@ export default function SettingsPage() {
               Match Notifications
             </div>
             <div className="text-xs mt-0.5" style={{ color: isDarkMode ? '#6b7280' : '#9ca3af' }}>
-              Get notified about match updates
+              Get notified about match updates on your registered email and phone number.
             </div>
           </div>
           <label className="toggle-switch">

@@ -10,7 +10,7 @@ export function AppProvider({ children }) {
   // ── Theme ───────────────────────────────────────────────
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('plynity_theme');
-    return saved !== null ? saved === 'dark' : true; // default dark
+    return saved !== null ? saved === 'dark' : false; // default light
   });
 
   // ── Notifications ────────────────────────────────────────

@@ -42,7 +42,7 @@ export default function ContactPage() {
             <div>
               <div className="text-xs mb-0.5" style={{ color: isDarkMode ? '#6b7280' : '#9ca3af' }}>Email Address</div>
               <div className="font-semibold text-sm" style={{ color: isDarkMode ? '#ffffff' : '#111827' }}>
-                plynitysupport@gmail.com
+                plynityesports@gmail.com
               </div>
             </div>
           </div>

@@ -1,12 +1,12 @@
 /**
- * Navbar — top bar with hamburger, logo, and notification bell
+ * Navbar — top bar with hamburger and logo
  */
-import { Bell, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import appLogo from '../assets/images/applogo.jpeg';
 
 export default function Navbar() {
-  const { setIsDrawerOpen, notificationsEnabled, isDarkMode } = useApp();
+  const { setIsDrawerOpen, isDarkMode } = useApp();
 
   return (
     <header
@@ -48,20 +48,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Notification Bell */}
-        <button
-          className="p-2 rounded-lg transition-colors relative"
-          style={{ color: isDarkMode ? '#9ca3af' : '#374151' }}
-          aria-label="Notifications"
-        >
-          <Bell size={22} />
-          {notificationsEnabled && (
-            <span
-              className="absolute top-2 right-2 w-2 h-2 rounded-full"
-              style={{ background: '#f97316' }}
-            />
-          )}
-        </button>
       </div>
     </header>
   );

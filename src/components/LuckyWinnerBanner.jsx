@@ -22,10 +22,10 @@ export default function LuckyWinnerBanner() {
         <span className="text-2xl">🏆</span>
         <div className="flex-1">
           <div className="font-bold text-base" style={{ color: isDarkMode ? '#ffffff' : '#111827' }}>
-            Monthly Lucky Winner
+            Monthly Lucky Winners
           </div>
           <div className="text-sm mt-0.5" style={{ color: isDarkMode ? '#6b7280' : '#9ca3af' }}>
-            Win ₹500 every month with a simple entry.
+            Win ₹100 every month with a simple entry.
           </div>
         </div>
         <ChevronRight size={20} color={isDarkMode ? '#4b5563' : '#9ca3af'} />

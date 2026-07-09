@@ -9,7 +9,7 @@ import appLogo from '../assets/images/applogo.jpeg';
 const menuItems = [
   { icon: Scale, label: 'Rules', sub: 'Tournament guidelines', path: '/rules' },
   { icon: Calendar, label: 'Your Upcoming Matches', sub: 'Saved registrations & status', path: '/upcoming' },
-  { icon: Trophy, label: 'Lucky Winner', sub: 'Win ₹500 monthly', path: '/lucky-winner' },
+  { icon: Trophy, label: 'Lucky Winner', sub: 'Win ₹100 monthly', path: '/lucky-winner' },
   { icon: Shield, label: 'Privacy Policy', sub: 'How your data is handled', path: '/privacy-policy' },
   { icon: FileText, label: 'Terms & Conditions', sub: 'Tournament rules and terms', path: '/terms' },
   { icon: AlertTriangle, label: 'Disclaimer', sub: 'Platform independence notice', path: '/disclaimer' },

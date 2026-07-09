@@ -5,17 +5,17 @@ import PageHeader from '../components/PageHeader';
 import { useApp } from '../context/AppContext';
 
 const steps = [
-  { n: 1, title: 'Follow on Instagram', desc: 'Follow our official Instagram page and keep your account public.' },
+  { n: 1, title: 'Follow on Instagram', desc: 'Follow our official Instagram page.' },
   { n: 2, title: 'Subscribe on YouTube', desc: 'Subscribe to our channel and turn on notifications.' },
-  { n: 3, title: 'Send a Screenshot', desc: 'Send a screenshot showing your follow and subscription to the admin. @plynityesports on Instagram.' },
+  { n: 3, title: 'Send a Screenshot', desc: 'Send a screenshot showing your follow and subscription to the admin. @plynityesports on Instagram or Telegram. ' },
 ];
 
 const terms = [
   'Winner is selected randomly every month.',
-  'You must follow and subscribe before the draw date.',
-  'Screenshot must clearly show your username.',
+  'You must follow and subscribe before the draw date (Example., 28, 29, 30, 31st Date.)',
+  'Screenshot must clearly show.',
   'Admin decision is final.',
-  'Prize is sent via UPI within 24 hours.',
+  'Prize is sent via UPI within 10 minutes.',
 ];
 
 export default function LuckyWinnerPage() {
@@ -23,14 +23,14 @@ export default function LuckyWinnerPage() {
 
   return (
     <div className="max-w-screen-sm mx-auto min-h-screen" style={{ background: isDarkMode ? '#0f1117' : '#f1f3f8' }}>
-      <PageHeader title="Lucky Winner" />
+      <PageHeader title="Lucky Winners" />
 
       <div className="px-4 py-6">
         <h2 className="text-2xl font-black mb-2" style={{ color: isDarkMode ? '#ffffff' : '#111827' }}>
-          Monthly Lucky Winner
+          Monthly Lucky Winners
         </h2>
         <p className="text-sm mb-6" style={{ color: isDarkMode ? '#6b7280' : '#9ca3af' }}>
-          Every month, one lucky follower wins ₹500. No entry fee and no registration needed.
+          Every month, 5 lucky follower wins ₹100. No entry fee and no registration needed.
         </p>
 
         <h3 className="font-bold mb-4" style={{ color: isDarkMode ? '#ffffff' : '#111827' }}>
