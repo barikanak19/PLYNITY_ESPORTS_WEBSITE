@@ -11,7 +11,7 @@ const sections = [
     rules: [
       { n: '01', title: 'Prize Pool May Decrease', desc: 'If total registrations are low, the prize pool may decrease proportionally.' },
       { n: '02', title: 'No Refunds', desc: 'Refunds are not available once the room ID and password have been created and shared.' },
-      { n: '03', title: 'Prize Payment Timeline', desc: 'Winners will receive their prize money within 4–5 hours after the match ends.' },
+      { n: '03', title: 'Prize Payment Timeline', desc: 'Winners will receive their prize money within 10-20 minutes after the match ends.' },
     ],
   },
   {

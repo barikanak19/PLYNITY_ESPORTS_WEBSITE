@@ -68,7 +68,7 @@ export function TermsPage() {
             'Prize pool may decrease if registrations are low.',
             'Entry fees are non-refundable after room creation.',
             'Hacking, cheating, or teaming may result in a permanent ban.',
-            'Winners may receive payment within 4–5 hours.',
+            'Winners may receive payment within 10 -20 minutes.',
             'Admin decisions are final.',
           ],
         },
